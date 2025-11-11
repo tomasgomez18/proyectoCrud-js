@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+.cliente{
+        background: url(../img/img-bg.jpeg) no-repeat center center/cover ;
+}
+
+nav {
+    background-color: #f4c430; 
+}
+
+nav.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+nav h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.items-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.items-nav a {
+    font-size: 20px;
+    text-decoration: none;
+    padding: 10px;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.items-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+
+.contenedor-formulario {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh; 
+}
+
+.contenedor-formulario h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 28px;
+    text-align: center;
+}
+
+.campo-grupo {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.campo-grupo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-formulario {
+    height: 50px;
+    width: 100%;
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    outline: none;  
+    box-shadow: 0 0 5px rgba(244, 196, 48, 0.5);
+}
+
+button {
+    height: 50px;
+    width: 100%;
+    max-width: 400px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+.login-container{
+    color: #333;
+    font-size: 20px;
+    text-align: center;
+    padding: 40px;
+}
+.input-login{
+    height: 50px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #ffffffbf;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.contenedor{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+.producto1{
+    border: 2px solid red;
+    padding: 20px;
+    margin: 15px;
+}
+.boton-cliente{
+    padding: 15px;
+    margin-left: 240px;
+}
+
+.h1-cliente{
+    padding: 20px;
+    margin-left: 20px;
+    font-size: 25px;
+}
+.img-cliente{
+    width: 150px;
+}
+.boton-comprar-cliente{
+    display:flex;
+    align-items: center;
+    margin-left: 50px;
+    height: 10px;
+    width: 2px;
+}
+.contenedor-crud{
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+td{
+    padding: 20px;
+}
+
+
+
