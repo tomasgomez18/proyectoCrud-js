@@ -1,47 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2do Parcial Programacion</title>
     <link rel="stylesheet" href="./Css/Style.css">
-    <title>Proyecto Programacion 2</title>
 </head>
-
 <body>
-
-
-    <header>
-        <nav class="navbar">
-            <h1>Proyecto Programacion 2</h1>
-            <div class="items-nav">
-                <a href="./pages/registrarse.html">Registrarse</a>
+    <div class="container">
+        <!-- Sección de Login/Registro -->
+        <div id="auth-section" class="auth-section">
+            <div class="auth-container">
+                <h2 id="auth-title">Iniciar Sesión</h2>
+                <form id="auth-form">
+                    <div id="name-field" class="form-group hidden">
+                        <label for="name">Nombre:</label>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electronico:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" id="auth-button">Iniciar Sesión</button>
+                </form>
+                <p id="auth-switch"> <a href="#" id="switch-link">Registrarte</a>
+                </p>
             </div>
-        </nav>
-    </header>
-
-    <main>
-        <div class="contenedor-formulario">
-            <h2>Iniciar sesion</h2>
-            <div class="campo-grupo">
-                <label for="nombre">Correo electronico</label>
-                <input type="email" placeholder="Correo electronico" class="input-formulario" id="usuario" required>
-            </div>
-            <div class="campo-grupo">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" placeholder="Contraseña" class="input-formulario" id="clave"
-                    required>
-            </div>
-            <button type="submit">Iniciar sesion</button>
-            <a class="boton-cliente" href="./pages/cliente.html">No soy administrador</a>
         </div>
-    </main>
 
+        <!-- Sección Principal (CRUD) -->
+        <div id="main-section" class="main-section hidden">
+            <header class="header">
+                <h1>Mi Sistema CRUD</h1>
+                <div class="user-info">
+                    <span id="user-welcome">Bienvenido</span>
+                    <button id="logout-btn" class="logout-btn">Cerrar Sesión</button>
+                </div>
+            </header>
 
-    <footer>
+            <div class="crud-container">
+                <div class="add-item-form">
+                    <h3>Agregar Nuevo Elemento</h3>
+                    <form id="add-form">
+                        <input type="text" id="item-name" placeholder="Nombre del elemento" required>
+                        <input type="text" id="item-description" placeholder="Descripción">
+                        <button type="submit">Agregar</button>
+                    </form>
+                </div>
 
-    </footer>
-    <script src="./Js/app.js"></script>
+                <div class="items-list">
+                    <h3>Lista de Elementos</h3>
+                    <div id="items-container" class="items-container">
+                        <!-- Los elementos se agregarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-
 </html>
