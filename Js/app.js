@@ -1,10 +1,10 @@
-// Clase para manejar el carrito de compras
+
 class Carrito {
-    // Método para agregar producto al carrito
+
     static agregarProducto(producto) {
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         
-        // Verificar si el producto ya está en el carrito
+ 
         const productoExistente = carrito.find(item => item.id === producto.id);
         
         if (productoExistente) {
@@ -23,7 +23,7 @@ class Carrito {
         this.mostrarCarrito();
     }
 
-    // Método para eliminar producto del carrito
+
     static eliminarProducto(id) {
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         carrito = carrito.filter(item => item.id !== id);
@@ -31,7 +31,7 @@ class Carrito {
         this.mostrarCarrito();
     }
 
-    // Método para mostrar el carrito
+
     static mostrarCarrito() {
         const listaCarrito = document.getElementById('lista-carrito');
         const totalCarrito = document.getElementById('total-carrito');
@@ -72,7 +72,7 @@ class Carrito {
             totalCarrito.textContent = total.toFixed(2);
         }
 
-        // Agregar eventos a botones eliminar
+    
         document.querySelectorAll('.btn-eliminar-carrito').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = parseInt(e.target.getAttribute('data-id'));
@@ -82,23 +82,23 @@ class Carrito {
     }
 }
 
-// Clase para manejar el sistema principal
+
 class Sistema {
     constructor() {
-        // Cargar productos del localStorage o usar los por defecto
+
         this.cargarProductos();
         this.inicializarEventos();
         this.mostrarProductos();
         this.cambiarSeccion('seccion-productos');
     }
 
-    // Método para cargar productos del localStorage
+
     cargarProductos() {
         const productosGuardados = localStorage.getItem('productos');
         if (productosGuardados) {
             this.productos = JSON.parse(productosGuardados);
         } else {
-            // Productos por defecto
+            
             this.productos = [
                 { id: 1, nombre: 'Laptop', precio: 1200, imagen: 'img/laptop.jpg' },
                 { id: 2, nombre: 'Smartphone', precio: 800, imagen: 'img/phone.jpg' },
@@ -109,12 +109,12 @@ class Sistema {
         }
     }
 
-    // Método para obtener el ID más alto
+    
     obtenerProximoId() {
         return Math.max(...this.productos.map(p => p.id), 0) + 1;
     }
 
-    // Método para agregar un nuevo producto
+
     agregarProducto(nombre, precio, imagen) {
         const nuevoProducto = {
             id: this.obtenerProximoId(),
@@ -130,7 +130,7 @@ class Sistema {
         return nuevoProducto;
     }
 
-    // Método para inicializar eventos del menú
+
     inicializarEventos() {
         document.getElementById('link-productos').addEventListener('click', (e) => {
             e.preventDefault();
@@ -153,7 +153,7 @@ class Sistema {
             this.salir();
         });
 
-        // Evento para el formulario de crear producto
+ 
         const formCrear = document.getElementById('form-crear-producto');
         if (formCrear) {
             formCrear.addEventListener('submit', (e) => {
@@ -163,7 +163,7 @@ class Sistema {
         }
     }
 
-    // Método para manejar la creación de producto
+
     manejarCrearProducto() {
         const nombre = document.getElementById('nombre-producto').value.trim();
         const precio = document.getElementById('precio-producto').value;
@@ -178,25 +178,24 @@ class Sistema {
 
         const producto = this.agregarProducto(nombre, precio, imagen);
         
-        // Limpiar formulario
+    
         document.getElementById('form-crear-producto').reset();
         
-        // Mostrar mensaje de éxito
+
         mensajeDiv.textContent = `¡Producto "${producto.nombre}" creado exitosamente!`;
         mensajeDiv.style.color = 'green';
 
-        // Limpiar mensaje después de 3 segundos
+    
         setTimeout(() => {
             mensajeDiv.textContent = '';
         }, 3000);
 
-        // Volver a la sección de productos
         setTimeout(() => {
             this.cambiarSeccion('seccion-productos');
         }, 1500);
     }
 
-    // Método para cambiar entre secciones
+
     cambiarSeccion(seccionId) {
         document.querySelectorAll('section').forEach(seccion => {
             seccion.classList.remove('seccion-activa');
@@ -209,7 +208,7 @@ class Sistema {
         }
     }
 
-    // Método para mostrar productos
+  
     mostrarProductos() {
         const listaProductos = document.getElementById('lista-productos');
         if (listaProductos) {
@@ -226,7 +225,7 @@ class Sistema {
                 listaProductos.appendChild(divProducto);
             });
 
-            // Agregar eventos a los botones de compra
+       
             document.querySelectorAll('.btn-agregar-carrito').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const id = parseInt(e.target.getAttribute('data-id'));
@@ -240,7 +239,7 @@ class Sistema {
         }
     }
 
-    // Método para mostrar carrito
+
     mostrarCarrito() {
         const listaCarrito = document.getElementById('lista-carrito');
         const totalCarrito = document.getElementById('total-carrito');
@@ -250,16 +249,16 @@ class Sistema {
         Carrito.mostrarCarrito();
     }
 
-    // Método para salir del sistema
+
     salir() {
         localStorage.removeItem('usuarioActivo');
         window.location.href = '../index.html';
     }
 }
 
-// Inicializar el sistema cuando se carga la página
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Verificar si hay un usuario activo
+   
     const usuarioActivo = localStorage.getItem('usuarioActivo');
     if (!usuarioActivo) {
         window.location.href = 'index.html';
