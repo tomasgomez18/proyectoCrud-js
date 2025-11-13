@@ -10,7 +10,6 @@ body {
     background-color: #3a3535;
 }
 
-/* Estilos para la página de login */
 .login-container {
     background-color: white;
     padding: 30px;
@@ -67,7 +66,6 @@ button:hover {
     color: red;
 }
 
-/* Estilos para el sistema */
 header {
     background-color: #333;
     color: white;
@@ -122,7 +120,7 @@ main {
     padding: 20px;
 }
 
-/* Estilos para secciones */
+
 section {
     transition: display 0.3s ease-in-out;
 }
@@ -188,7 +186,7 @@ section {
     background-color: #218838 !important;
 }
 
-/* Estilos para carrito */
+
 .carrito-items {
     margin-top: 20px;
 }
@@ -232,7 +230,7 @@ section {
     background-color: #0056b3 !important;
 }
 
-/* Estilos para el formulario de crear producto */
+
 .form-crear-producto {
     background-color: white;
     padding: 20px;
