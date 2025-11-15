@@ -66,6 +66,27 @@ button:hover {
     color: red;
 }
 
+#mensaje-registro {
+    text-align: center;
+    margin-top: 15px;
+    color: red;
+}
+
+.crear-usuario {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.crear-usuario:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
 header {
     background-color: #333;
     color: white;
@@ -308,4 +329,8 @@ section {
     font-size: 1.2em;
     font-weight: bold;
     text-align: right;
+}
+.crear-usuario{
+    margin-left: 60px;
+    
 }

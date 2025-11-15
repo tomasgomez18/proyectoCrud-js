@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="login-form">
+        <div class="login-form" id="formulario-login">
             <h2>Iniciar Sesión</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -20,8 +20,34 @@
                     <input type="password" id="password" required>
                 </div>
                 <button type="submit">Acceder</button>
+                <a href="#" id="link-registro" class="crear-usuario">Crear un usuario</a>
             </form>
             <p id="mensaje"></p>
+        </div>
+
+        <div class="login-form" id="formulario-registro" style="display: none;">
+            <h2>Registrarse</h2>
+            <form id="registroForm">
+                <div class="form-group">
+                    <label for="nombre-registro">Nombre:</label>
+                    <input type="text" id="nombre-registro" required>
+                </div>
+                <div class="form-group">
+                    <label for="email-registro">Correo electrónico:</label>
+                    <input type="email" id="email-registro" required>
+                </div>
+                <div class="form-group">
+                    <label for="password-registro">Clave:</label>
+                    <input type="password" id="password-registro" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmar-password">Confirmar Clave:</label>
+                    <input type="password" id="confirmar-password" required>
+                </div>
+                <button type="submit">Registrarse</button>
+                <a href="#" id="link-volver-login" class="crear-usuario">Volver al login</a>
+            </form>
+            <p id="mensaje-registro"></p>
         </div>
     </div>
     <script src="./Js/login.js"></script>
