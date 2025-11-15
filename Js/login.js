@@ -23,7 +23,7 @@ class Usuario {
   }
 }
 
-// Clase para manejar el registro
+
 class Registro {
   constructor() {
     this.usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -48,7 +48,7 @@ class Registro {
   }
 }
 
-// Clase para manejar el login
+
 class Login {
   constructor() {
     this.usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -57,13 +57,13 @@ class Login {
   }
 
   inicializarEventos() {
-    // Eventos del formulario de login
+
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       e.preventDefault();
       this.validarLogin();
     });
 
-    // Eventos para cambiar entre formularios
+
     document.getElementById("link-registro").addEventListener("click", (e) => {
       e.preventDefault();
       this.mostrarFormularioRegistro();
@@ -74,7 +74,7 @@ class Login {
       this.mostrarFormularioLogin();
     });
 
-    // Evento del formulario de registro
+
     document.getElementById("registroForm").addEventListener("submit", (e) => {
       e.preventDefault();
       this.procesarRegistro();
@@ -82,7 +82,7 @@ class Login {
   }
 
   validarLogin() {
-    // Recargar usuarios del localStorage para asegurar que tenemos los más actualizados
+
     this.usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
     
     const email = document.getElementById("email").value;
@@ -128,7 +128,7 @@ class Login {
 
     if (resultado.valido) {
       setTimeout(() => {
-        // Recargar usuarios del localStorage en la instancia de Login
+
         this.usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
         this.mostrarFormularioLogin();
         document.getElementById("registroForm").reset();
@@ -151,7 +151,7 @@ class Login {
 document.addEventListener("DOMContentLoaded", () => {
   new Login();
 
-  // Crear usuarios de prueba si no existen
+ 
   if (!localStorage.getItem("usuarios")) {
     const usuarios = [{ nombre: "Usuario Demo", email: "tomas@proyecto.com", password: "123456" }];
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
