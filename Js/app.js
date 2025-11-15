@@ -100,8 +100,8 @@ class Sistema {
         } else {
             
             this.productos = [
-                { id: 1, nombre: 'Laptop', precio: 1200, imagen: 'img/laptop.jpg' },
-                { id: 2, nombre: 'Smartphone', precio: 800, imagen: 'img/phone.jpg' },
+                { id: 1, nombre: 'Macbook', precio: 1200, imagen: 'img/laptop.jpg' },
+                { id: 2, nombre: 'Iphone 13 pro', precio: 800, imagen: 'img/phone.jpg' },
                 { id: 3, nombre: 'Tablet', precio: 500, imagen: 'img/tablet.jpg' },
                 { id: 4, nombre: 'Auriculares', precio: 150, imagen: 'img/headphones.jpg' }
             ];
