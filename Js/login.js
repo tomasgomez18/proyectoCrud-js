@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
  
   if (!localStorage.getItem("usuarios")) {
-    const usuarios = [{ nombre: "Usuario Demo", email: "tomas@proyecto.com", password: "123456" }];
+    const usuarios = [{ nombre: "Usuario", email: "tomas@proyecto.com", password: "123456" }];
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
   }
 });
