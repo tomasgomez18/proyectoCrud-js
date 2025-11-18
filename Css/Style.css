@@ -259,7 +259,7 @@ section {
     align-items: center;
 }
 
-/* Limitar tamaño de la imagen en el carrito y mejorar layout */
+
 .item-carrito img {
     width: 64px;
     height: 64px;

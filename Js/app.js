@@ -1,4 +1,4 @@
-// Función global para normalizar rutas de imagen (útil para productos y carrito)
+
 function normalizarRutaImagenGlobal(ruta) {
   if (!ruta) return "../assets/imgPrueba.jpeg";
   ruta = ruta.trim();
@@ -101,12 +101,12 @@ class Sistema {
   cargarProductos() {
     const productosGuardados = localStorage.getItem("productos");
     if (productosGuardados) {
-      // Normalizar rutas de imagen de productos guardados
+
       this.productos = JSON.parse(productosGuardados).map(p => ({
         ...p,
         imagen: this.normalizarRutaImagen(p.imagen)
       }));
-      // Guardar las rutas normalizadas de vuelta para evitar inconsistencias
+
       localStorage.setItem('productos', JSON.stringify(this.productos));
     } else {
       this.productos = [
@@ -132,21 +132,20 @@ class Sistema {
     }
   }
 
-  // Normaliza la ruta de la imagen para que funcione desde `pages/sistema.html`
   normalizarRutaImagen(ruta) {
-    if (!ruta) return "../assets/imgPrueba.jpeg"; // imagen por defecto
+    if (!ruta) return "../assets/imgPrueba.jpeg"; 
     ruta = ruta.trim();
-    // Si es URL absoluta
+
     if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
-    // Si ya es relativa desde pages (comienza con ../)
+
     if (ruta.startsWith("../")) return ruta;
-    // Si referencia assets directamente (assets/imagen.jpg)
+
     if (ruta.startsWith("assets/")) return "../" + ruta;
-    // Si referencia img/ (ruta antigua), convertir a ../assets/
+
     if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop();
-    // Si es solo nombre de archivo, asumir está en assets
+
     if (ruta.indexOf("/") === -1) return "../assets/" + ruta;
-    // Por defecto, devolver la ruta tal cual
+
     return ruta;
   }
 
@@ -250,7 +249,6 @@ class Sistema {
         const divProducto = document.createElement("div");
         divProducto.className = "producto";
           const imgSrc = this.normalizarRutaImagen(producto.imagen) || normalizarRutaImagenGlobal(producto.imagen);
-          // DEBUG: mostrar rutas en consola para diagnosticar imágenes
           console.debug('Producto:', producto.nombre, 'imagen guardada:', producto.imagen, '-> usar src:', imgSrc);
         divProducto.innerHTML = `
                     <img src="${imgSrc}" alt="${producto.nombre}" onerror="this.onerror=null;this.src='../assets/imgPrueba.jpeg'">
@@ -292,12 +290,12 @@ class Sistema {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Reinicio automático de productos/carrito una sola vez para restaurar rutas por defecto
+
   if (!localStorage.getItem('productosResetV2') && localStorage.getItem('productos')) {
     localStorage.removeItem('productos');
     localStorage.removeItem('carrito');
     localStorage.setItem('productosResetV2', '1');
-    // Recargar para que se creen los productos por defecto
+
     location.reload();
     return;
   }
