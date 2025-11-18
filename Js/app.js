@@ -1,3 +1,15 @@
+// Función global para normalizar rutas de imagen (útil para productos y carrito)
+function normalizarRutaImagenGlobal(ruta) {
+  if (!ruta) return "../assets/imgPrueba.jpeg";
+  ruta = ruta.trim();
+  if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
+  if (ruta.startsWith("../")) return ruta;
+  if (ruta.startsWith("assets/")) return "../" + ruta;
+  if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop();
+  if (ruta.indexOf("/") === -1) return "../assets/" + ruta;
+  return ruta;
+}
+
 class Carrito {
   static agregarProducto(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -50,19 +62,18 @@ class Carrito {
       const subtotal = item.precio * item.cantidad;
       total += subtotal;
 
-      const divItem = document.createElement("div");
-      divItem.className = "item-carrito";
-      divItem.innerHTML = `
-                <div>
-                    <img src="${item.imagen}"></img>
-                    <h3>${item.nombre}</h3>
-                    <p>Precio: $${item.precio} x ${item.cantidad}</p>
-                    <p>Subtotal: $${subtotal.toFixed(2)}</p>
-                </div>
-                <button class="btn-eliminar-carrito" data-id="${
-                  item.id
-                }">Eliminar</button>
-            `;
+        const divItem = document.createElement("div");
+        divItem.className = "item-carrito";
+        const imgSrc = normalizarRutaImagenGlobal(item.imagen);
+        divItem.innerHTML = `
+            <div>
+              <img src="${imgSrc}" alt="${item.nombre}" onerror="this.onerror=null;this.src='../assets/imgPrueba.jpeg'" />
+              <h3>${item.nombre}</h3>
+              <p>Precio: $${item.precio} x ${item.cantidad}</p>
+              <p>Subtotal: $${subtotal.toFixed(2)}</p>
+            </div>
+            <button class="btn-eliminar-carrito" data-id="${item.id}">Eliminar</button>
+          `;
       listaCarrito.appendChild(divItem);
     });
 
@@ -95,6 +106,8 @@ class Sistema {
         ...p,
         imagen: this.normalizarRutaImagen(p.imagen)
       }));
+      // Guardar las rutas normalizadas de vuelta para evitar inconsistencias
+      localStorage.setItem('productos', JSON.stringify(this.productos));
     } else {
       this.productos = [
         { id: 1, nombre: "Macbook", precio: 1200, imagen: "../assets/macbooj.jpeg" },
@@ -233,13 +246,14 @@ class Sistema {
     const listaProductos = document.getElementById("lista-productos");
     if (listaProductos) {
       listaProductos.innerHTML = "";
-      this.productos.forEach((producto) => {
+        this.productos.forEach((producto) => {
         const divProducto = document.createElement("div");
         divProducto.className = "producto";
+          const imgSrc = this.normalizarRutaImagen(producto.imagen) || normalizarRutaImagenGlobal(producto.imagen);
+          // DEBUG: mostrar rutas en consola para diagnosticar imágenes
+          console.debug('Producto:', producto.nombre, 'imagen guardada:', producto.imagen, '-> usar src:', imgSrc);
         divProducto.innerHTML = `
-                    <img src="${producto.imagen}" alt="${
-          producto.nombre
-        }" onerror="this.style.backgroundColor='#eee'; this.alt='Imagen no disponible'">
+                    <img src="${imgSrc}" alt="${producto.nombre}" onerror="this.onerror=null;this.src='../assets/imgPrueba.jpeg'">
                     <h3>${producto.nombre}</h3>
                     <p>Precio: $${producto.precio.toFixed(2)}</p>
                     <button class="btn-agregar-carrito" data-id="${
@@ -278,6 +292,16 @@ class Sistema {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Reinicio automático de productos/carrito una sola vez para restaurar rutas por defecto
+  if (!localStorage.getItem('productosResetV2') && localStorage.getItem('productos')) {
+    localStorage.removeItem('productos');
+    localStorage.removeItem('carrito');
+    localStorage.setItem('productosResetV2', '1');
+    // Recargar para que se creen los productos por defecto
+    location.reload();
+    return;
+  }
+
   const usuarioActivo = localStorage.getItem("usuarioActivo");
   if (!usuarioActivo) {
     window.location.href = "index.html";
