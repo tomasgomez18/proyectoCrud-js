@@ -1,16 +1,20 @@
-
+// Normaliza rutas de imagen para que funcionen desde la página
+// Explico esto: dependiendo de cómo se guarde la ruta (solo nombre, img/archivo, assets/archivo)
+// necesitamos convertirla a la forma que usa la página dentro de `pages/`.
 function normalizarRutaImagenGlobal(ruta) {
-  if (!ruta) return "../assets/imgPrueba.jpeg";
+  if (!ruta) return "../assets/imgPrueba.jpeg"; // imagen por defecto si no hay nada
   ruta = ruta.trim();
-  if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
-  if (ruta.startsWith("../")) return ruta;
-  if (ruta.startsWith("assets/")) return "../" + ruta;
-  if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop();
-  if (ruta.indexOf("/") === -1) return "../assets/" + ruta;
-  return ruta;
+  if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta; // enlace fuera
+  if (ruta.startsWith("../")) return ruta; // ya está bien para esta página
+  if (ruta.startsWith("assets/")) return "../" + ruta; // lo movemos un nivel arriba
+  if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop(); // nombre antiguo
+  if (ruta.indexOf("/") === -1) return "../assets/" + ruta; // solo nombre → asumimos assets
+  return ruta; // si no es ninguno de los casos, lo devolvemos tal cual
 }
 
+// Esta clase se encarga de todo lo del carrito: sumar, eliminar y mostrar
 class Carrito {
+  // agregar un producto al carrito (si ya está, aumentamos cantidad)
   static agregarProducto(producto) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
@@ -28,10 +32,12 @@ class Carrito {
       });
     }
 
+    // guardamos el carrito en el navegador para que persista
     localStorage.setItem("carrito", JSON.stringify(carrito));
     this.mostrarCarrito();
   }
 
+  // sacar un producto del carrito
   static eliminarProducto(id) {
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     carrito = carrito.filter((item) => item.id !== id);
@@ -39,11 +45,12 @@ class Carrito {
     this.mostrarCarrito();
   }
 
+  // dibuja el carrito en la pantalla
   static mostrarCarrito() {
     const listaCarrito = document.getElementById("lista-carrito");
     const totalCarrito = document.getElementById("total-carrito");
 
-    if (!listaCarrito) return;
+    if (!listaCarrito) return; // si no existe el contenedor no hacemos nada
 
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
     listaCarrito.innerHTML = "";
@@ -62,10 +69,12 @@ class Carrito {
       const subtotal = item.precio * item.cantidad;
       total += subtotal;
 
-        const divItem = document.createElement("div");
-        divItem.className = "item-carrito";
-        const imgSrc = normalizarRutaImagenGlobal(item.imagen);
-        divItem.innerHTML = `
+      // usamos la función que normaliza la ruta para que el navegador encuentre la imagen
+      const imgSrc = normalizarRutaImagenGlobal(item.imagen);
+
+      const divItem = document.createElement("div");
+      divItem.className = "item-carrito";
+      divItem.innerHTML = `
             <div>
               <img src="${imgSrc}" alt="${item.nombre}" onerror="this.onerror=null;this.src='../assets/imgPrueba.jpeg'" />
               <h3>${item.nombre}</h3>
@@ -81,6 +90,7 @@ class Carrito {
       totalCarrito.textContent = total.toFixed(2);
     }
 
+    // añadimos el evento para eliminar a cada botón
     document.querySelectorAll(".btn-eliminar-carrito").forEach((button) => {
       button.addEventListener("click", (e) => {
         const id = parseInt(e.target.getAttribute("data-id"));
@@ -90,69 +100,56 @@ class Carrito {
   }
 }
 
+// Clase que controla los productos y la navegación entre secciones
 class Sistema {
   constructor() {
+    // cargamos productos (desde el navegador si ya hay, o los por defecto)
     this.cargarProductos();
     this.inicializarEventos();
     this.mostrarProductos();
     this.cambiarSeccion("seccion-productos");
   }
 
+  // cargamos productos desde localStorage o creamos los de ejemplo
   cargarProductos() {
     const productosGuardados = localStorage.getItem("productos");
     if (productosGuardados) {
-
-      this.productos = JSON.parse(productosGuardados).map(p => ({
+      // Normalizamos las rutas y guardamos de nuevo para dejar todo consistente
+      this.productos = JSON.parse(productosGuardados).map((p) => ({
         ...p,
-        imagen: this.normalizarRutaImagen(p.imagen)
+        imagen: this.normalizarRutaImagen(p.imagen),
       }));
-
-      localStorage.setItem('productos', JSON.stringify(this.productos));
+      localStorage.setItem("productos", JSON.stringify(this.productos));
     } else {
+      // productos por defecto, con rutas apuntando a la carpeta assets
       this.productos = [
         { id: 1, nombre: "Macbook", precio: 1200, imagen: "../assets/macbooj.jpeg" },
-        {
-          id: 2,
-          nombre: "Iphone 13 pro",
-          precio: 800,
-          imagen: "../assets/iphone13.jpeg",
-        },
-        { id: 3, nombre: "Tablet", 
-          precio: 500, 
-          imagen: "../assets/tablet.jpeg" 
-        },
-        {
-          id: 4,
-          nombre: "Auriculares",
-          precio: 150,
-          imagen: "../assets/auriculares.jpeg",
-        },
+        { id: 2, nombre: "Iphone 13 pro", precio: 800, imagen: "../assets/iphone13.jpeg" },
+        { id: 3, nombre: "Tablet", precio: 500, imagen: "../assets/tablet.jpeg" },
+        { id: 4, nombre: "Auriculares", precio: 150, imagen: "../assets/auriculares.jpeg" },
       ];
       localStorage.setItem("productos", JSON.stringify(this.productos));
     }
   }
 
+  // convierte rutas que pueda haber en distintas formas a la que usa la página
   normalizarRutaImagen(ruta) {
-    if (!ruta) return "../assets/imgPrueba.jpeg"; 
+    if (!ruta) return "../assets/imgPrueba.jpeg"; // si no hay ruta, usamos una imagen de prueba
     ruta = ruta.trim();
-
     if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
-
     if (ruta.startsWith("../")) return ruta;
-
     if (ruta.startsWith("assets/")) return "../" + ruta;
-
     if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop();
-
     if (ruta.indexOf("/") === -1) return "../assets/" + ruta;
-
     return ruta;
   }
 
+  // devuelve el próximo id disponible para un nuevo producto
   obtenerProximoId() {
     return Math.max(...this.productos.map((p) => p.id), 0) + 1;
   }
 
+  // agrega producto a la lista y lo guarda
   agregarProducto(nombre, precio, imagen) {
     const nuevoProducto = {
       id: this.obtenerProximoId(),
@@ -168,18 +165,17 @@ class Sistema {
     return nuevoProducto;
   }
 
+  // conectamos los enlaces del menú y el formulario de nuevo producto
   inicializarEventos() {
     document.getElementById("link-productos").addEventListener("click", (e) => {
       e.preventDefault();
       this.cambiarSeccion("seccion-productos");
     });
 
-    document
-      .getElementById("link-crear-producto")
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        this.cambiarSeccion("seccion-crear-producto");
-      });
+    document.getElementById("link-crear-producto").addEventListener("click", (e) => {
+      e.preventDefault();
+      this.cambiarSeccion("seccion-crear-producto");
+    });
 
     document.getElementById("link-carrito").addEventListener("click", (e) => {
       e.preventDefault();
@@ -201,6 +197,7 @@ class Sistema {
     }
   }
 
+  // lee el formulario de nuevo producto, valida y lo guarda
   manejarCrearProducto() {
     const nombre = document.getElementById("nombre-producto").value.trim();
     const precio = document.getElementById("precio-producto").value;
@@ -229,6 +226,7 @@ class Sistema {
     }, 1500);
   }
 
+  // cambiar entre secciones mostrando y ocultando
   cambiarSeccion(seccionId) {
     document.querySelectorAll("section").forEach((seccion) => {
       seccion.classList.remove("seccion-activa");
@@ -241,26 +239,27 @@ class Sistema {
     }
   }
 
+  // dibuja la lista de productos en la pantalla
   mostrarProductos() {
     const listaProductos = document.getElementById("lista-productos");
     if (listaProductos) {
       listaProductos.innerHTML = "";
-        this.productos.forEach((producto) => {
+      this.productos.forEach((producto) => {
+        // calculamos la ruta que usará la imagen y la mostramos en consola para ayuda
+        const imgSrc = this.normalizarRutaImagen(producto.imagen) || normalizarRutaImagenGlobal(producto.imagen);
+        console.debug("Producto:", producto.nombre, "imagen guardada:", producto.imagen, "-> usar src:", imgSrc);
         const divProducto = document.createElement("div");
         divProducto.className = "producto";
-          const imgSrc = this.normalizarRutaImagen(producto.imagen) || normalizarRutaImagenGlobal(producto.imagen);
-          console.debug('Producto:', producto.nombre, 'imagen guardada:', producto.imagen, '-> usar src:', imgSrc);
         divProducto.innerHTML = `
                     <img src="${imgSrc}" alt="${producto.nombre}" onerror="this.onerror=null;this.src='../assets/imgPrueba.jpeg'">
                     <h3>${producto.nombre}</h3>
                     <p>Precio: $${producto.precio.toFixed(2)}</p>
-                    <button class="btn-agregar-carrito" data-id="${
-                      producto.id
-                    }">Agregar al Carrito</button>
+                    <button class="btn-agregar-carrito" data-id="${producto.id}">Agregar al Carrito</button>
                 `;
         listaProductos.appendChild(divProducto);
       });
 
+      // eventos para agregar al carrito
       document.querySelectorAll(".btn-agregar-carrito").forEach((button) => {
         button.addEventListener("click", (e) => {
           const id = parseInt(e.target.getAttribute("data-id"));
@@ -283,19 +282,20 @@ class Sistema {
     Carrito.mostrarCarrito();
   }
 
+  // cerrar sesión y volver al login
   salir() {
     localStorage.removeItem("usuarioActivo");
     window.location.href = "../index.html";
   }
 }
 
+// al cargar la página hacemos un pequeño reinicio si hace falta para arreglar rutas
 document.addEventListener("DOMContentLoaded", () => {
-
-  if (!localStorage.getItem('productosResetV2') && localStorage.getItem('productos')) {
-    localStorage.removeItem('productos');
-    localStorage.removeItem('carrito');
-    localStorage.setItem('productosResetV2', '1');
-
+  if (!localStorage.getItem("productosResetV2") && localStorage.getItem("productos")) {
+    // borra productos y carrito una vez para forzar re-guardado con rutas correctas
+    localStorage.removeItem("productos");
+    localStorage.removeItem("carrito");
+    localStorage.setItem("productosResetV2", "1");
     location.reload();
     return;
   }
