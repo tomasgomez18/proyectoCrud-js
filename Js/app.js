@@ -90,26 +90,51 @@ class Sistema {
   cargarProductos() {
     const productosGuardados = localStorage.getItem("productos");
     if (productosGuardados) {
-      this.productos = JSON.parse(productosGuardados);
+      // Normalizar rutas de imagen de productos guardados
+      this.productos = JSON.parse(productosGuardados).map(p => ({
+        ...p,
+        imagen: this.normalizarRutaImagen(p.imagen)
+      }));
     } else {
       this.productos = [
-        { id: 1, nombre: "Macbook", precio: 1200, imagen: "img/laptop.jpg" },
+        { id: 1, nombre: "Macbook", precio: 1200, imagen: "../assets/macbooj.jpeg" },
         {
           id: 2,
           nombre: "Iphone 13 pro",
           precio: 800,
-          imagen: "img/phone.jpg",
+          imagen: "../assets/iphone13.jpeg",
         },
-        { id: 3, nombre: "Tablet", precio: 500, imagen: "../assets/imgPrueba" },
+        { id: 3, nombre: "Tablet", 
+          precio: 500, 
+          imagen: "../assets/tablet.jpeg" 
+        },
         {
           id: 4,
           nombre: "Auriculares",
           precio: 150,
-          imagen: "img/headphones.jpg",
+          imagen: "../assets/auriculares.jpeg",
         },
       ];
       localStorage.setItem("productos", JSON.stringify(this.productos));
     }
+  }
+
+  // Normaliza la ruta de la imagen para que funcione desde `pages/sistema.html`
+  normalizarRutaImagen(ruta) {
+    if (!ruta) return "../assets/imgPrueba.jpeg"; // imagen por defecto
+    ruta = ruta.trim();
+    // Si es URL absoluta
+    if (ruta.startsWith("http://") || ruta.startsWith("https://")) return ruta;
+    // Si ya es relativa desde pages (comienza con ../)
+    if (ruta.startsWith("../")) return ruta;
+    // Si referencia assets directamente (assets/imagen.jpg)
+    if (ruta.startsWith("assets/")) return "../" + ruta;
+    // Si referencia img/ (ruta antigua), convertir a ../assets/
+    if (ruta.startsWith("img/")) return "../assets/" + ruta.split("/").pop();
+    // Si es solo nombre de archivo, asumir está en assets
+    if (ruta.indexOf("/") === -1) return "../assets/" + ruta;
+    // Por defecto, devolver la ruta tal cual
+    return ruta;
   }
 
   obtenerProximoId() {
@@ -121,7 +146,7 @@ class Sistema {
       id: this.obtenerProximoId(),
       nombre: nombre,
       precio: parseFloat(precio),
-      imagen: imagen || "img/default.jpg",
+      imagen: this.normalizarRutaImagen(imagen),
     };
 
     this.productos.push(nuevoProducto);

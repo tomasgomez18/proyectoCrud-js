@@ -259,6 +259,21 @@ section {
     align-items: center;
 }
 
+/* Limitar tamaño de la imagen en el carrito y mejorar layout */
+.item-carrito img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+.item-carrito > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .resumen-carrito {
     background-color: white;
     padding: 20px;
